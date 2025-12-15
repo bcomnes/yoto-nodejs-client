@@ -1,0 +1,16 @@
+{ status: { events: 'OK', req_body: 'interactive-1766520307411' } }
+
+📨 EVENTS MESSAGE [2025-12-23T20:05:08.122Z]:
+Topic: device/y2iYT7ItkMRWbuMzTDuGjgmS/data/events
+────────────────────────────────────────────────────────────
+{
+  repeatAll: false,
+  volume: 6,
+  volumeMax: 13,
+  cardId: 'none',
+  playbackStatus: 'stopped',
+  streaming: false,
+  playbackWait: false,
+  sleepTimerActive: false,
+  eventUtc: 1766520313
+}

@@ -1,0 +1,149 @@
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/status' }
+
+📊 STATUS MESSAGE [2025-12-23T18:42:30.489Z]:
+────────────────────────────────────────────────────────────
+{
+  status: {
+    statusVersion: 3,
+    fwVersion: 'v2.23.2',
+    shutDown: 'nA',
+    totalDisk: 31385600,
+    productType: 'mini',
+    wifiStrength: -26,
+    ssid: 'WeeFee',
+    rtcResetReasonPRO: 5,
+    rtcResetReasonAPP: 14,
+    rtcWakeupCause: 901,
+    espResetReason: 8,
+    sd_info: '0xad, 0x4c53(LS), USD00, 16, 1100876108, 04-2023, 1, 0, 1461, 50000000',
+    battery: 4116,
+    powerCaps: '',
+    batteryLevel: 100,
+    batteryTemp: 0,
+    batteryData: '0:0:0',
+    batteryLevelRaw: 98,
+    free: 3885908,
+    freeDMA: 59254,
+    free32: 82098,
+    upTime: 12,
+    utcTime: 0,
+    aliveTime: 12455380,
+    accelTemp: 11,
+    batteryProfile: 'HPT-FD80X-2000-64',
+    freeDisk: 25160368,
+    failReason: 0,
+    failData: 0,
+    shutdownTimeout: 3600,
+    utcOffset: 0,
+    nfcErrs: '0.00%-0.00%',
+    dbatTimeout: 60,
+    charging: 0,
+    powerSrc: 0,
+    activeCard: 'none',
+    cardInserted: 0,
+    playingStatus: 0,
+    headphones: 0,
+    wifiRestarts: 1,
+    qiOtp: 0,
+    buzzErrors: 0,
+    dnowBrightness: 100,
+    dayBright: 100,
+    nightBright: 1,
+    errorsLogged: 9,
+    twdt: 0,
+    bluetoothHp: 0,
+    nightlightMode: 'off',
+    bgDownload: 0,
+    bytesPS: 0,
+    day: -1,
+    temp: '0:0:0',
+    als: 0,
+    volume: 55,
+    userVolume: 50,
+    timeFormat: '12',
+    chgStatLevel: 0,
+    missedLogs: 0,
+    nfcLock: 0,
+    batteryFullPct: 80
+  }
+}
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/status' }
+
+📊 STATUS MESSAGE [2025-12-23T18:42:32.305Z]:
+────────────────────────────────────────────────────────────
+{
+  status: {
+    battery: 4116,
+    powerCaps: '',
+    batteryLevel: 100,
+    batteryTemp: 0,
+    batteryData: '0:0:0',
+    batteryLevelRaw: 98,
+    free: 3907880,
+    freeDMA: 64038,
+    free32: 86882,
+    upTime: 14,
+    utcTime: 0,
+    aliveTime: 12455380,
+    accelTemp: 10
+  }
+}
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/data/status' }
+
+📊 STATUS MESSAGE [2025-12-23T18:42:32.521Z]:
+────────────────────────────────────────────────────────────
+{
+  status: {
+    statusVersion: 1,
+    fwVersion: 'v2.23.2',
+    productType: 'mini',
+    batteryLevel: 100,
+    als: 0,
+    freeDisk: 25160368,
+    shutdownTimeout: 3600,
+    dbatTimeout: 60,
+    charging: 0,
+    activeCard: 'none',
+    cardInserted: 0,
+    playingStatus: 0,
+    headphones: 0,
+    dnowBrightness: 100,
+    dayBright: 100,
+    nightBright: 1,
+    bluetoothHp: 0,
+    volume: 55,
+    userVolume: 50,
+    timeFormat: '12',
+    day: -1
+  }
+}
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/data/events' }
+
+📨 EVENTS MESSAGE [2025-12-23T18:42:32.522Z]:
+────────────────────────────────────────────────────────────
+{
+  repeatAll: false,
+  volume: 8,
+  volumeMax: 13,
+  cardId: 'none',
+  playbackStatus: 'stopped',
+  streaming: false,
+  playbackWait: false,
+  sleepTimerActive: false,
+  eventUtc: 1766515352
+}
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/events' }
+
+📨 EVENTS MESSAGE [2025-12-23T18:42:32.522Z]:
+────────────────────────────────────────────────────────────
+{
+  repeatAll: false,
+  volume: 8,
+  volumeMax: 13,
+  cardId: 'none',
+  playbackStatus: 'stopped',
+  streaming: false,
+  playbackWait: false,
+  sleepTimerActive: false,
+  eventUtc: 1766515352
+}

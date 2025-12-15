@@ -1,0 +1,52 @@
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/status' }
+
+📊 STATUS MESSAGE [2025-12-23T19:17:32.621Z]:
+────────────────────────────────────────────────────────────
+{
+  status: {
+    battery: 4102,
+    powerCaps: '',
+    batteryLevel: 100,
+    batteryTemp: 0,
+    batteryData: '0:0:0',
+    batteryLevelRaw: 96,
+    free: 3926172,
+    freeDMA: 70750,
+    free32: 93594,
+    upTime: 2114,
+    utcTime: 1766517454,
+    aliveTime: 12457480,
+    accelTemp: 27
+  }
+}
+{ topic: 'device/y2iYT7ItkMRWbuMzTDuGjgmS/data/status' }
+
+📊 STATUS MESSAGE [2025-12-23T19:17:32.895Z]:
+────────────────────────────────────────────────────────────
+{
+  status: {
+    statusVersion: 1,
+    fwVersion: 'v2.23.2',
+    productType: 'mini',
+    batteryLevel: 100,
+    als: 0,
+    freeDisk: 25108704,
+    shutdownTimeout: 3600,
+    dbatTimeout: 60,
+    charging: 0,
+    activeCard: 'none',
+    cardInserted: 0,
+    playingStatus: 0,
+    headphones: 0,
+    dnowBrightness: 0,
+    dayBright: 100,
+    nightBright: 1,
+    bluetoothHp: 0,
+    volume: 50,
+    userVolume: 43,
+    timeFormat: '12',
+    day: 1
+  }
+}
+
+~5  minutes you get a status update

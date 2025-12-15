@@ -1,0 +1,18 @@
+{
+  "extends": "@voxpelli/tsconfig/node22.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "coverage",
+    ".github"
+  ]
+}
