@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@unblessed/node':
-        specifier: 1.0.0-alpha.23
-        version: 1.0.0-alpha.23(omggif@1.0.10)(pngjs@7.0.0)
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
@@ -24,6 +21,9 @@ importers:
       '@types/node':
         specifier: ^25.0.0
         version: 25.0.3
+      '@unblessed/node':
+        specifier: 1.0.0-alpha.23
+        version: 1.0.0-alpha.23(omggif@1.0.10)(pngjs@7.0.0)
       '@voxpelli/tsconfig':
         specifier: ^16.1.0
         version: 16.1.0(typescript@5.9.3)

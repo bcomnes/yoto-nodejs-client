@@ -165,6 +165,40 @@ async function main () {
         accessToken
       })
 
+      // Setup interactive keyboard input (once, before connecting)
+      readline.emitKeypressEvents(process.stdin)
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(true)
+      }
+
+      process.stdin.on('keypress', (_str, key) => {
+        if (key.ctrl && key.name === 'c') {
+          cleanup()
+          return
+        }
+
+        if (key.name === 's') {
+          const requestId = `interactive-${Date.now()}`
+          console.log(`\n⌨️  Requesting status [${requestId}]...`)
+          mqttClient.requestStatus(requestId).catch(err => {
+            console.error('⚠️  Failed to request status:', err.message)
+          })
+        } else if (key.name === 'e') {
+          const requestId = `interactive-${Date.now()}`
+          console.log(`\n⌨️  Requesting events [${requestId}]...`)
+          mqttClient.requestEvents(requestId).catch(err => {
+            console.error('⚠️  Failed to request events:', err.message)
+          })
+        } else if (key.name === 'return') {
+          const timestamp = new Date().toISOString()
+          console.log(`\n${'─'.repeat(60)}`)
+          console.log(`📍 MARKER [${timestamp}]`)
+          console.log(`${'─'.repeat(60)}\n`)
+        } else if (key.name === 'q') {
+          cleanup()
+        }
+      })
+
       // Setup message handlers
       mqttClient.on('connected', () => {
         console.log('✅ Connected to MQTT broker')
@@ -211,40 +245,6 @@ async function main () {
         }
 
         console.log() // Add blank line for spacing
-
-        // Setup interactive keyboard input
-        readline.emitKeypressEvents(process.stdin)
-        if (process.stdin.isTTY) {
-          process.stdin.setRawMode(true)
-        }
-
-        process.stdin.on('keypress', (_str, key) => {
-          if (key.ctrl && key.name === 'c') {
-            cleanup()
-            return
-          }
-
-          if (key.name === 's') {
-            const requestId = `interactive-${Date.now()}`
-            console.log(`\n⌨️  Requesting status [${requestId}]...`)
-            mqttClient.requestStatus(requestId).catch(err => {
-              console.error('⚠️  Failed to request status:', err.message)
-            })
-          } else if (key.name === 'e') {
-            const requestId = `interactive-${Date.now()}`
-            console.log(`\n⌨️  Requesting events [${requestId}]...`)
-            mqttClient.requestEvents(requestId).catch(err => {
-              console.error('⚠️  Failed to request events:', err.message)
-            })
-          } else if (key.name === 'return') {
-            const timestamp = new Date().toISOString()
-            console.log(`\n${'─'.repeat(60)}`)
-            console.log(`📍 MARKER [${timestamp}]`)
-            console.log(`${'─'.repeat(60)}\n`)
-          } else if (key.name === 'q') {
-            cleanup()
-          }
-        })
       })
 
       mqttClient.on('events', (topic, payload) => {
