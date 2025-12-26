@@ -1144,7 +1144,7 @@ yoto-devices --device-id abc123 --mqtt --mqtt-timeout 10
 # Use YotoDeviceModel to monitor device (HTTP + MQTT)
 yoto-device-model --device-id abc123
 
-# Interactive TUI for device control (Prototype/WIP)
+# Interactive TUI for device control (Prototype/WIP/Unpublished)
 yoto-device-tui --device-id abc123
 ```
 

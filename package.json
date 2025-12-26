@@ -7,12 +7,12 @@
     "url": "https://github.com/bcomnes/yoto-nodejs-client/issues"
   },
   "dependencies": {
-    "@unblessed/node": "1.0.0-alpha.23",
     "jwt-decode": "^4.0.0",
     "mqtt": "^5.14.1",
     "undici": "^7.16.0"
   },
   "devDependencies": {
+    "@unblessed/node": "1.0.0-alpha.23",
     "@types/node": "^25.0.0",
     "@voxpelli/tsconfig": "^16.1.0",
     "argsclopts": "^1.0.5",
@@ -61,7 +61,6 @@
     "yoto-refresh-token": "./bin/refresh-token.js",
     "yoto-devices": "./bin/devices.js",
     "yoto-device-model": "./bin/device-model.js",
-    "yoto-device-tui": "./bin/device-tui.js",
     "yoto-content": "./bin/content.js",
     "yoto-groups": "./bin/groups.js",
     "yoto-icons": "./bin/icons.js"
