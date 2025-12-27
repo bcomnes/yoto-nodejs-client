@@ -191,8 +191,8 @@ async function main () {
         console.log(`   Bluetooth Enabled: ${config.bluetoothEnabled}`)
         console.log(`   BT Headphones Enabled: ${config.btHeadphonesEnabled}`)
         console.log(`   Clock Face: ${config.clockFace}`)
-        console.log(`   Day Display Brightness: ${config.dayDisplayBrightness}`)
-        console.log(`   Night Display Brightness: ${config.nightDisplayBrightness}`)
+        console.log(`   💡 Day Display Brightness: ${config.dayDisplayBrightness}`)
+        console.log(`   💡 Night Display Brightness: ${config.nightDisplayBrightness}`)
         console.log(`   Shutdown Timeout: ${config.shutdownTimeout}`)
         console.log(`   Volume Level: ${config.volumeLevel}`)
         console.log(`   Ambient Colour: ${config.ambientColour}`)
@@ -202,7 +202,9 @@ async function main () {
         // Show only changed fields
         console.log(`\n⚙️  CONFIG UPDATE [${timestamp}]: (${changedFields.size} change${changedFields.size === 1 ? '' : 's'})`)
         for (const field of changedFields) {
-          console.log(`   ${field}: ${config[field]}`)
+          // Highlight brightness changes
+          const prefix = (field === 'dayDisplayBrightness' || field === 'nightDisplayBrightness') ? '💡 ' : ''
+          console.log(`   ${prefix}${field}: ${config[field]}`)
         }
       } else {
         console.log(`\n⚙️  CONFIG UPDATE [${timestamp}]: (no changes)`)
@@ -284,14 +286,28 @@ async function main () {
       }
     })
 
-    deviceModel.on('mqttConnected', () => {
+    deviceModel.on('mqttConnect', () => {
       const timestamp = new Date().toISOString()
       console.log(`\n🔌 MQTT CONNECTED [${timestamp}]`)
     })
 
-    deviceModel.on('mqttDisconnected', () => {
+    deviceModel.on('mqttDisconnect', (metadata) => {
       const timestamp = new Date().toISOString()
       console.log(`\n🔌 MQTT DISCONNECTED [${timestamp}]`)
+      const reasonCode = metadata.packet.reasonCode ?? 'unknown'
+      console.log(`   Reason Code: ${reasonCode}`)
+      console.log('   Packet:', metadata.packet)
+    })
+
+    deviceModel.on('mqttClose', (metadata) => {
+      const timestamp = new Date().toISOString()
+      console.log(`\n🔌 MQTT CLOSED [${timestamp}]`)
+      console.log(`   Reason: ${metadata.reason}`)
+    })
+
+    deviceModel.on('mqttReconnect', () => {
+      const timestamp = new Date().toISOString()
+      console.log(`\n🔌 MQTT RECONNECTING [${timestamp}]`)
     })
 
     deviceModel.on('error', (error) => {
@@ -328,6 +344,10 @@ async function main () {
     console.log(`   MQTT Connected: ${deviceModel.mqttConnected}`)
     console.log(`   Initialized: ${deviceModel.initialized}`)
     console.log(`   Running: ${deviceModel.running}`)
+
+    console.log('\n💡 Current Brightness Config:')
+    console.log(`   Day Display Brightness: ${deviceModel.config.dayDisplayBrightness}`)
+    console.log(`   Night Display Brightness: ${deviceModel.config.nightDisplayBrightness}`)
 
     console.log('\n🔧 Capabilities:')
     console.log(`   Temperature Sensor: ${deviceModel.capabilities.hasTemperatureSensor}`)

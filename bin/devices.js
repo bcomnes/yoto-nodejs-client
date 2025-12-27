@@ -15,7 +15,6 @@ import {
   handleCliError,
   printHeader
 } from './lib/cli-helpers.js'
-import { createYotoMqttClient } from '../lib/mqtt/index.js'
 import { parseTemperature } from '../lib/helpers/temperature.js'
 
 /** @type {ArgscloptsParseArgsOptionsConfig} */
@@ -160,10 +159,7 @@ async function main () {
       console.log('🔌 Connecting to MQTT...')
       console.log('='.repeat(60))
 
-      const mqttClient = createYotoMqttClient({
-        deviceId,
-        accessToken
-      })
+      const mqttClient = await client.createMqttClient({ deviceId })
 
       // Setup interactive keyboard input (once, before connecting)
       readline.emitKeypressEvents(process.stdin)
@@ -200,8 +196,9 @@ async function main () {
       })
 
       // Setup message handlers
-      mqttClient.on('connected', () => {
+      mqttClient.on('connect', (connack) => {
         console.log('✅ Connected to MQTT broker')
+        console.log(`   Session present: ${connack.sessionPresent ? 'yes' : 'no'}`)
         console.log('📡 Subscribed to topics:')
         console.log(`   • device/${deviceId}/data/events (playback events)`)
         console.log(`   • device/${deviceId}/data/status (regular status)`)
@@ -316,16 +313,35 @@ async function main () {
         console.dir(payload, { depth: null, colors: true })
       })
 
-      mqttClient.on('disconnected', () => {
-        console.log('\n❌ Disconnected from MQTT broker')
+      mqttClient.on('disconnect', (metadata) => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n❌ MQTT DISCONNECTED [${timestamp}]`)
+        const reasonCode = metadata.packet.reasonCode ?? 'unknown'
+        console.log(`   Reason Code: ${reasonCode}`)
       })
 
-      mqttClient.on('reconnecting', () => {
+      mqttClient.on('close', (metadata) => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n❌ MQTT CLOSED [${timestamp}]`)
+        console.log(`   Reason: ${metadata.reason}`)
+      })
+
+      mqttClient.on('reconnect', () => {
         console.log('\n🔄 Reconnecting to MQTT broker...')
+      })
+
+      mqttClient.on('offline', () => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n📴 MQTT OFFLINE [${timestamp}]`)
       })
 
       mqttClient.on('error', (error) => {
         console.error('\n⚠️  MQTT Error:', error.message)
+      })
+
+      mqttClient.on('end', () => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n🛑 MQTT END [${timestamp}]`)
       })
 
       // Handle graceful shutdown

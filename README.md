@@ -962,8 +962,10 @@ Create a stateful device client that manages device state primarily from MQTT wi
 - `playbackUpdate(playback, changedFields)` - Playback state changed, passes (playback, changedFields)
 - `online(metadata)` - Device came online, passes metadata with reason and optional upTime
 - `offline(metadata)` - Device went offline, passes metadata with reason and optional shutDownReason or timeSinceLastSeen
-- `mqttConnected()` - MQTT client connected
-- `mqttDisconnected()` - MQTT client disconnected
+- `mqttConnect()` - MQTT client connected
+- `mqttDisconnect(metadata)` - MQTT disconnect packet received, passes metadata with disconnect packet
+- `mqttClose(metadata)` - MQTT connection closed, passes metadata with close reason
+- `mqttReconnect()` - MQTT client is reconnecting
 - `error(error)` - Error occurred, passes error
 
 **Static Properties & Methods:**
@@ -1037,7 +1039,7 @@ Create an account manager that automatically discovers and manages all devices f
 - `deviceRemoved(deviceId)` - Device was removed
 - `error(error, context)` - Error occurred (context: { source, deviceId, operation })
 
-**Note:** To listen to individual device events (statusUpdate, configUpdate, playbackUpdate, online, offline, mqttConnected, mqttDisconnected, etc.), access the device models directly via `account.devices` or `account.getDevice(deviceId)` and attach listeners to them.
+**Note:** To listen to individual device events (statusUpdate, configUpdate, playbackUpdate, online, offline, mqttConnect, mqttDisconnect, mqttClose, mqttReconnect, etc.), access the device models directly via `account.devices` or `account.getDevice(deviceId)` and attach listeners to them.
 
 ```js
 import { YotoAccount } from 'yoto-nodejs-client'
