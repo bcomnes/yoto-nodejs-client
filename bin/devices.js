@@ -200,7 +200,7 @@ async function main () {
       })
 
       // Setup message handlers
-      mqttClient.on('connected', () => {
+      mqttClient.on('connect', () => {
         console.log('✅ Connected to MQTT broker')
         console.log('📡 Subscribed to topics:')
         console.log(`   • device/${deviceId}/data/events (playback events)`)
@@ -316,11 +316,20 @@ async function main () {
         console.dir(payload, { depth: null, colors: true })
       })
 
-      mqttClient.on('disconnected', () => {
-        console.log('\n❌ Disconnected from MQTT broker')
+      mqttClient.on('disconnect', (metadata) => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n❌ MQTT DISCONNECTED [${timestamp}]`)
+        const reasonCode = metadata.packet.reasonCode ?? 'unknown'
+        console.log(`   Reason Code: ${reasonCode}`)
       })
 
-      mqttClient.on('reconnecting', () => {
+      mqttClient.on('close', (metadata) => {
+        const timestamp = new Date().toISOString()
+        console.log(`\n❌ MQTT CLOSED [${timestamp}]`)
+        console.log(`   Reason: ${metadata.reason}`)
+      })
+
+      mqttClient.on('reconnect', () => {
         console.log('\n🔄 Reconnecting to MQTT broker...')
       })
 

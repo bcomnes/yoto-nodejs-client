@@ -988,7 +988,7 @@ async function main () {
       screen.render()
     })
 
-    model.on('mqttConnected', () => {
+    model.on('mqttConnect', () => {
       updateDeviceCard(card, index === selectedIndex)
 
       if (currentView === 'detail' && detailView.model === model) {
@@ -998,11 +998,31 @@ async function main () {
       screen.render()
     })
 
-    model.on('mqttDisconnected', () => {
+    model.on('mqttDisconnect', () => {
       updateDeviceCard(card, index === selectedIndex)
 
       if (currentView === 'detail' && detailView.model === model) {
         logToDetail(detailView, 'MQTT disconnected', 'mqtt')
+        updateDetailView(detailView)
+      }
+      screen.render()
+    })
+
+    model.on('mqttClose', () => {
+      updateDeviceCard(card, index === selectedIndex)
+
+      if (currentView === 'detail' && detailView.model === model) {
+        logToDetail(detailView, 'MQTT closed', 'mqtt')
+        updateDetailView(detailView)
+      }
+      screen.render()
+    })
+
+    model.on('mqttReconnect', () => {
+      updateDeviceCard(card, index === selectedIndex)
+
+      if (currentView === 'detail' && detailView.model === model) {
+        logToDetail(detailView, 'MQTT reconnecting', 'mqtt')
         updateDetailView(detailView)
       }
       screen.render()
