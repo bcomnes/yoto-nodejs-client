@@ -6,12 +6,3 @@ public
 coverage
 .tap
 .env
-
-# Generated types
-
-*.d.ts
-*.d.ts.map
-*.d.cts
-*.d.cts.map
-*.d.mts
-*.d.mts.map
