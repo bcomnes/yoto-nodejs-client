@@ -16,6 +16,7 @@ import {
   handleCliError
 } from './lib/cli-helpers.js'
 import { DEFAULT_CLIENT_ID } from '../lib/api-endpoints/constants.js'
+import { join } from 'node:path'
 
 /** @type {ArgscloptsParseArgsOptionsConfig} */
 const options = {
@@ -51,7 +52,7 @@ if (args.values['help']) {
 }
 
 // Load .env file if specified or use default
-const outputFile = String(args.values['output'] || '.env')
+const outputFile = String(args.values['output'] || join(process.cwd(), '.env'))
 loadEnvFile(args.values['env-file'] ? String(args.values['env-file']) : outputFile)
 
 const clientId = String(args.values['client-id'] || process.env['YOTO_CLIENT_ID'] || DEFAULT_CLIENT_ID)
@@ -90,12 +91,13 @@ async function main () {
       onTokenRefresh: async (tokens) => {
         // This will be called after successful refresh
         // Convert RefreshSuccessEvent to YotoTokenResponse format
-        await saveTokensToEnv(outputFile, {
+        const { resolvedPath } = await saveTokensToEnv(outputFile, {
           access_token: tokens.updatedAccessToken,
           refresh_token: tokens.updatedRefreshToken,
           token_type: 'Bearer',
           expires_in: tokens.updatedExpiresAt - Math.floor(Date.now() / 1000)
         }, tokens.clientId)
+        console.log(`Token Refreshed: ${resolvedPath}`)
       },
       onRefreshStart: () => {
         console.log('\n🔄 Refreshing tokens...')

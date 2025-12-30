@@ -725,12 +725,14 @@ async function main () {
       refreshToken,
       accessToken,
       onTokenRefresh: async (tokens) => {
-        await saveTokensToEnv(envFile, {
+        const { resolvedPath } = await saveTokensToEnv(envFile, {
           access_token: tokens.updatedAccessToken,
           refresh_token: tokens.updatedRefreshToken,
           token_type: 'Bearer',
           expires_in: tokens.updatedExpiresAt - Math.floor(Date.now() / 1000)
         }, tokens.clientId)
+
+        console.log(`Auth token refreshed: ${resolvedPath}`)
       }
     },
     deviceOptions: {

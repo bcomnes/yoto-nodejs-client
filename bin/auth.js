@@ -6,6 +6,7 @@
 
 import { printHelpText } from 'argsclopts'
 import { parseArgs } from 'node:util'
+import { join } from 'node:path'
 import { YotoClient } from '../index.js'
 import { pkg } from '../lib/pkg.cjs'
 import { DEFAULT_CLIENT_ID } from '../lib/api-endpoints/constants.js'
@@ -41,7 +42,7 @@ if (args.values['help']) {
 
 const clientId = String(args.values['client-id'] || process.env['YOTO_CLIENT_ID'] || DEFAULT_CLIENT_ID)
 
-const outputFile = String(args.values['output'] || '.env')
+const outputFile = String(args.values['output'] || join(process.cwd(), '.env'))
 
 async function main () {
   printHeader('Yoto Device Flow Authentication')
@@ -93,9 +94,9 @@ async function main () {
     // Success! Save tokens to .env file
     console.log('\n✅ Authorization successful!\n')
 
-    await saveTokensToEnv(outputFile, tokens, clientId)
+    const { resolvedPath } = await saveTokensToEnv(outputFile, tokens, clientId)
 
-    console.log(`✨ Tokens saved to ${outputFile}`)
+    console.log(`✨ Tokens saved to ${resolvedPath}`)
     console.log('\nYou can now use these environment variables:')
     console.log('  - YOTO_ACCESS_TOKEN')
     console.log('  - YOTO_REFRESH_TOKEN')

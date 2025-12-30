@@ -297,13 +297,13 @@ try {
     onTokenRefresh: async (tokens) => {
       // Save tokens if they refresh during inspection
       console.log('\n⚠️  Token was refreshed during inspection! Saving...')
-      await saveTokensToEnv(outputFile, {
+      const { resolvedPath } = await saveTokensToEnv(outputFile, {
         access_token: tokens.updatedAccessToken,
         refresh_token: tokens.updatedRefreshToken,
         token_type: 'Bearer',
         expires_in: tokens.updatedExpiresAt - Math.floor(Date.now() / 1000)
       }, tokens.clientId)
-      console.log(`✅ Updated tokens saved to ${outputFile}`)
+      console.log(`✅ Updated tokens saved to ${resolvedPath}`)
     },
     onRefreshStart: () => {
       console.log('\n🔄 Token refresh triggered during inspection...')

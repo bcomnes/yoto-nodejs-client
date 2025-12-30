@@ -3,7 +3,7 @@
  */
 
 import { promises as fs } from 'node:fs'
-import { join } from 'node:path'
+import { resolve } from 'node:path'
 import { jwtDecode } from 'jwt-decode'
 
 /**
@@ -76,19 +76,18 @@ export function decodeJwt (token) {
 
 /**
  * Save tokens to .env file
- * @param {string} filename
+ * @param {string} envFilePath file path
  * @param {YotoTokenResponse} tokens
  * @param {string} clientId
  */
-export async function saveTokensToEnv (filename, tokens, clientId) {
-  const cwd = process.cwd()
-  const filePath = join(cwd, filename)
-
+export async function saveTokensToEnv (envFilePath, tokens, clientId) {
   let existingContent = ''
+
+  const resolvedPath = resolve(envFilePath)
 
   // Read existing .env file if it exists
   try {
-    existingContent = await fs.readFile(filePath, 'utf8')
+    existingContent = await fs.readFile(envFilePath, 'utf8')
   } catch (err) {
     // File doesn't exist, that's okay
   }
@@ -139,7 +138,9 @@ export async function saveTokensToEnv (filename, tokens, clientId) {
   lines.push(`YOTO_CLIENT_ID=${clientId}`)
 
   // Write back to file
-  await fs.writeFile(filePath, lines.join('\n'), 'utf8')
+  await fs.writeFile(envFilePath, lines.join('\n'), 'utf8')
+
+  return { resolvedPath }
 }
 
 /**

@@ -86,12 +86,14 @@ export function createYotoClient ({ clientId, refreshToken, accessToken, outputF
     accessToken,
     onTokenRefresh: async (tokens) => {
       // Save tokens if they refresh during operation
-      await saveTokensToEnv(outputFile, {
+      const { resolvedPath } = await saveTokensToEnv(outputFile, {
         access_token: tokens.updatedAccessToken,
         refresh_token: tokens.updatedRefreshToken,
         token_type: 'Bearer',
         expires_in: tokens.updatedExpiresAt - Math.floor(Date.now() / 1000)
       }, tokens.clientId)
+
+      console.log(`Auth token refreshed: ${resolvedPath}`)
     },
     onRefreshStart: () => {
       console.log('\n🔄 Token refresh triggered...')
