@@ -169,7 +169,15 @@ console.log('Current playback:', deviceClient.playback)
 console.log('Device capabilities:', deviceClient.capabilities)
 
 // Control the device
-await deviceClient.updateConfig({ maxVolumeLimit: '14' })
+await deviceClient.updateConfig({ maxVolumeLimit: 14 })
+await deviceClient.updateConfig({
+  dayDisplayBrightnessAuto: false,
+  dayDisplayBrightness: 80
+})
+await deviceClient.updateConfig({
+  nightYotoRadioEnabled: true,
+  nightYotoRadio: 'favourites'
+})
 await deviceClient.sendCommand({ volume: 50 })
 
 // Stop when done
@@ -938,7 +946,7 @@ Create a stateful device client that manages device state primarily from MQTT wi
 **State Accessors:**
 - `deviceClient.device` - Device information
 - `deviceClient.status` - Current device status (normalized from HTTP/MQTT)
-- `deviceClient.config` - Device configuration
+- `deviceClient.config` - Device configuration (normalized numbers/booleans; auto fields split into `<field>Auto` + value)
 - `deviceClient.shortcuts` - Button shortcuts
 - `deviceClient.playback` - Current playback state
 - `deviceClient.capabilities` - Hardware capabilities (sensors, nightlight support, etc.)
@@ -1003,7 +1011,15 @@ console.log('Available colors:', YotoDeviceModel.NIGHTLIGHT_COLORS)
 console.log('Color name:', YotoDeviceModel.getNightlightColorName('0x643600'))
 
 // Control device
-await deviceClient.updateConfig({ maxVolumeLimit: '14' })
+await deviceClient.updateConfig({ maxVolumeLimit: 14 })
+await deviceClient.updateConfig({
+  nightDisplayBrightnessAuto: true,
+  nightDisplayBrightness: null
+})
+await deviceClient.updateConfig({
+  nightYotoRadioEnabled: false,
+  nightYotoRadio: null
+})
 
 await deviceClient.stop()
 ```
