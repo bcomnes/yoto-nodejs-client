@@ -958,6 +958,7 @@ Create a stateful device client that manages device state primarily from MQTT wi
 - `await deviceClient.refreshConfig()` - Refresh config from HTTP API
 - `await deviceClient.updateConfig(configUpdate)` - Update device configuration
 - `await deviceClient.sendCommand(command)` - Send device command via HTTP
+- `await deviceClient.startCard({ cardId, [chapterKey], [trackKey] })` - Start playing a card
 
 **Events:**
 - `started(metadata)` - Device client started, passes metadata object with device, config, shortcuts, status, playback, initialized, running
