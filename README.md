@@ -211,24 +211,21 @@ account.on('started', (metadata) => {
 
 
 
-// Listen for device-specific events from individual devices
-account.on('deviceAdded', (deviceId, deviceModel) => {
-  // Attach event listeners to each device as it's added
-  deviceModel.on('statusUpdate', (status, source) => {
-    console.log(`${deviceId} battery: ${status.batteryLevelPercentage}%`)
-  })
+// Listen for device events across all devices via the unified bus
+account.on('statusUpdate', ({ deviceId, status, source }) => {
+  console.log(`${deviceId} battery: ${status.batteryLevelPercentage}% (${source})`)
+})
 
-  deviceModel.on('online', (metadata) => {
-    console.log(`${deviceId} came online`)
-  })
+account.on('online', ({ deviceId }) => {
+  console.log(`${deviceId} came online`)
+})
 
-  deviceModel.on('offline', (metadata) => {
-    console.log(`${deviceId} went offline`)
-  })
+account.on('offline', ({ deviceId }) => {
+  console.log(`${deviceId} went offline`)
 })
 
 // Unified error handling
-account.on('error', (error, context) => {
+account.on('error', ({ error, context }) => {
   console.error(`Error in ${context.source}:`, error.message)
   if (context.deviceId) {
     console.error(`Device: ${context.deviceId}`)
@@ -970,10 +967,17 @@ Create a stateful device client that manages device state primarily from MQTT wi
 - `playbackUpdate(playback, changedFields)` - Playback state changed, passes (playback, changedFields)
 - `online(metadata)` - Device came online, passes metadata with reason and optional upTime
 - `offline(metadata)` - Device went offline, passes metadata with reason and optional shutDownReason or timeSinceLastSeen
-- `mqttConnect()` - MQTT client connected
+- `mqttConnect(metadata)` - MQTT client connected, passes CONNACK metadata
 - `mqttDisconnect(metadata)` - MQTT disconnect packet received, passes metadata with disconnect packet
 - `mqttClose(metadata)` - MQTT connection closed, passes metadata with close reason
 - `mqttReconnect()` - MQTT client is reconnecting
+- `mqttOffline()` - MQTT client goes offline
+- `mqttEnd()` - MQTT client end is called
+- `mqttStatus(topic, message)` - Raw MQTT status messages (documented status topic)
+- `mqttEvents(topic, message)` - Raw MQTT events messages
+- `mqttStatusLegacy(topic, message)` - Raw legacy MQTT status messages (undocumented status topic)
+- `mqttResponse(topic, message)` - Raw MQTT response messages
+- `mqttUnknown(topic, message)` - Raw MQTT messages that do not match known types
 - `error(error)` - Error occurred, passes error
 
 **Static Properties & Methods:**
@@ -1051,11 +1055,27 @@ Create an account manager that automatically discovers and manages all devices f
 **Events:**
 - `started(metadata)` - Account started (metadata: { deviceCount, devices })
 - `stopped()` - Account stopped
-- `deviceAdded(deviceId, deviceModel)` - Device was added
-- `deviceRemoved(deviceId)` - Device was removed
-- `error(error, context)` - Error occurred (context: { source, deviceId, operation })
+- `deviceAdded({ deviceId })` - Device was added
+- `deviceRemoved({ deviceId })` - Device was removed
+- `statusUpdate({ deviceId, status, source, changedFields })` - Re-emitted device status update
+- `configUpdate({ deviceId, config, changedFields })` - Re-emitted config update
+- `playbackUpdate({ deviceId, playback, changedFields })` - Re-emitted playback update
+- `online({ deviceId, metadata })` - Re-emitted online event
+- `offline({ deviceId, metadata })` - Re-emitted offline event
+- `mqttConnect({ deviceId, metadata })` - Re-emitted MQTT connect
+- `mqttDisconnect({ deviceId, metadata })` - Re-emitted MQTT disconnect
+- `mqttClose({ deviceId, metadata })` - Re-emitted MQTT close
+- `mqttReconnect({ deviceId })` - Re-emitted MQTT reconnect
+- `mqttOffline({ deviceId })` - Re-emitted MQTT offline
+- `mqttEnd({ deviceId })` - Re-emitted MQTT end
+- `mqttStatus({ deviceId, topic, message })` - Re-emitted raw MQTT status
+- `mqttEvents({ deviceId, topic, message })` - Re-emitted raw MQTT events
+- `mqttStatusLegacy({ deviceId, topic, message })` - Re-emitted raw MQTT legacy status
+- `mqttResponse({ deviceId, topic, message })` - Re-emitted raw MQTT response
+- `mqttUnknown({ deviceId, topic, message })` - Re-emitted raw MQTT unknown message
+- `error({ error, context })` - Error occurred (context: { source, deviceId, operation })
 
-**Note:** To listen to individual device events (statusUpdate, configUpdate, playbackUpdate, online, offline, mqttConnect, mqttDisconnect, mqttClose, mqttReconnect, etc.), access the device models directly via `account.devices` or `account.getDevice(deviceId)` and attach listeners to them.
+**Note:** You can still listen to individual device events by attaching listeners to each `YotoDeviceModel`, but the account now re-emits device and MQTT events with device context for unified handling.
 
 ```js
 import { YotoAccount } from 'yoto-nodejs-client'
@@ -1075,26 +1095,21 @@ const account = new YotoAccount({
 })
 
 // Account-level error handling
-account.on('error', (error, context) => {
+account.on('error', ({ error, context }) => {
   console.error(`Error in ${context.source}:`, error.message)
 })
 
-// Listen to device added events
-account.on('deviceAdded', (deviceId, deviceModel) => {
-  console.log(`Device ${deviceId} added`)
-  
-  // Attach listeners to individual devices
-  deviceModel.on('statusUpdate', (status, source) => {
-    console.log(`${deviceId} battery: ${status.batteryLevelPercentage}%`)
-  })
-  
-  deviceModel.on('online', (metadata) => {
-    console.log(`${deviceId} came online (${metadata.reason})`)
-  })
-  
-  deviceModel.on('offline', (metadata) => {
-    console.log(`${deviceId} went offline (${metadata.reason})`)
-  })
+// Unified device events across all devices
+account.on('statusUpdate', ({ deviceId, status, source }) => {
+  console.log(`${deviceId} battery: ${status.batteryLevelPercentage}% (${source})`)
+})
+
+account.on('online', ({ deviceId, metadata }) => {
+  console.log(`${deviceId} came online (${metadata.reason})`)
+})
+
+account.on('offline', ({ deviceId, metadata }) => {
+  console.log(`${deviceId} went offline (${metadata.reason})`)
 })
 
 await account.start()
