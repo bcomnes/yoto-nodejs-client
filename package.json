@@ -1,7 +1,7 @@
 {
   "name": "yoto-nodejs-client",
   "description": "(Unofficial) Node.js client for the Yoto API with automatic token refresh, MQTT device communication, and TypeScript support",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "Bret Comnes <bcomnes@gmail.com> (https://bret.io)",
   "bugs": {
     "url": "https://github.com/bcomnes/yoto-nodejs-client/issues"
