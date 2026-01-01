@@ -7,13 +7,15 @@
     "url": "https://github.com/bcomnes/yoto-nodejs-client/issues"
   },
   "dependencies": {
+    "fastq": "^1.20.1",
     "jwt-decode": "^4.0.0",
     "mqtt": "^5.14.1",
+    "quick-lru": "^7.3.0",
     "undici": "^7.16.0"
   },
   "devDependencies": {
-    "@unblessed/node": "1.0.0-alpha.23",
     "@types/node": "^25.0.0",
+    "@unblessed/node": "1.0.0-alpha.23",
     "@voxpelli/tsconfig": "^16.1.0",
     "argsclopts": "^1.0.5",
     "auto-changelog": "^2.0.0",
