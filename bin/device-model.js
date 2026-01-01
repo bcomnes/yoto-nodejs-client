@@ -230,6 +230,7 @@ async function main () {
       }
 
       if (showFullState) {
+        const cardDuration = playback.cardDurationSeconds === null ? null : `${playback.cardDurationSeconds}s`
         // Show full playback state
         console.log(`\n${playbackIcon}  PLAYBACK UPDATE [${timestamp}]: (FULL STATE)`)
         console.log(`   Status: ${playback.playbackStatus}`)
@@ -239,6 +240,12 @@ async function main () {
         console.log(`   Chapter Key: ${playback.chapterKey}`)
         console.log(`   Position: ${playback.position}/${playback.trackLength}s`)
         console.log(`   Card ID: ${playback.cardId}`)
+        console.log(`   Card Title: ${playback.cardTitle}`)
+        console.log(`   Card Slug: ${playback.cardSlug}`)
+        console.log(`   Card Cover Image: ${playback.cardCoverImageUrl}`)
+        console.log(`   Card Author: ${playback.cardAuthor}`)
+        console.log(`   Card Read By: ${playback.cardReadBy}`)
+        console.log(`   Card Duration: ${cardDuration}`)
         console.log(`   Source: ${playback.source}`)
         console.log(`   Streaming: ${playback.streaming}`)
         console.log(`   Sleep Timer Active: ${playback.sleepTimerActive}`)
@@ -257,6 +264,9 @@ async function main () {
             // Skip if we already printed this combo
             if (field === 'trackLength') continue
           } else {
+            if (field === 'cardDurationSeconds' && typeof value === 'number') {
+              value = `${value}s`
+            }
             console.log(`   ${field}: ${value}`)
           }
         }
