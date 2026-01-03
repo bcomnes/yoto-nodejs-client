@@ -108,7 +108,7 @@ async function main () {
     if (error.message === 'Device code has expired') {
       console.error('\n❌ Device code has expired. Please run the command again.')
       process.exit(1)
-    } else if (error.body?.error === 'expired_token') {
+    } else if (error.jsonBody?.error === 'expired_token') {
       console.error('\n❌ Device code has expired. Please run the command again.')
       process.exit(1)
     } else {

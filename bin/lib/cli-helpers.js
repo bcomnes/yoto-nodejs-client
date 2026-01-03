@@ -116,17 +116,20 @@ export function handleCliError (error) {
     console.error(`Status Code: ${error.statusCode}`)
   }
 
-  if (error.body?.error) {
-    console.error(`Error: ${error.body.error}`)
+  if (error.jsonBody?.error) {
+    console.error(`Error: ${error.jsonBody.error}`)
   }
 
-  if (error.body?.error_description) {
-    console.error(`Description: ${error.body.error_description}`)
+  if (error.jsonBody?.error_description) {
+    console.error(`Description: ${error.jsonBody.error_description}`)
   }
 
-  if (error.body && typeof error.body === 'object') {
+  if (error.jsonBody && typeof error.jsonBody === 'object') {
     console.error('\nFull error response:')
-    console.error(JSON.stringify(error.body, null, 2))
+    console.error(JSON.stringify(error.jsonBody, null, 2))
+  } else if (error.textBody) {
+    console.error('\nRaw error response:')
+    console.error(error.textBody)
   }
 
   process.exit(1)
