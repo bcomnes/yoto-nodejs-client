@@ -256,19 +256,22 @@ async function main () {
         // Show only changed fields
         console.log(`\n${playbackIcon}  PLAYBACK UPDATE [${timestamp}]: (${changedFields.size} change${changedFields.size === 1 ? '' : 's'})`)
         for (const field of changedFields) {
+          if (field === 'trackLength' && changedFields.has('position')) {
+            continue
+          }
+
           let value = playback[field]
           if (field === 'position' || field === 'trackLength') {
-            // Show position/trackLength together if either changed
+            // Show position/trackLength together if either changed.
             value = `${playback.position}/${playback.trackLength}s`
             console.log(`   position/trackLength: ${value}`)
-            // Skip if we already printed this combo
-            if (field === 'trackLength') continue
-          } else {
-            if (field === 'cardDurationSeconds' && typeof value === 'number') {
-              value = `${value}s`
-            }
-            console.log(`   ${field}: ${value}`)
+            continue
           }
+
+          if (field === 'cardDurationSeconds' && typeof value === 'number') {
+            value = `${value}s`
+          }
+          console.log(`   ${field}: ${value}`)
         }
       } else {
         console.log(`\n${playbackIcon}  PLAYBACK UPDATE [${timestamp}]: (no changes)`)
