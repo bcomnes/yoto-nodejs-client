@@ -22,7 +22,7 @@ jobs:
         with:
           # fetch full history so things like auto-changelog work properly
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: 10
       - name: Use Node.js ${{ env.node }}
